@@ -669,14 +669,17 @@ function getOne(index) {
 // 1. 新增全域變數
 let layoutDirection = 'vertical'; // 預設直式
 
-// 2. 監聽點擊事件
+// 1. 根據預設排列方向亮起對應按鈕
 window.addEventListener('DOMContentLoaded', function() {
     const verticalBtn = document.getElementById('direction_vertical');
     const horizontalBtn = document.getElementById('direction_horizontal');
-
-    // 預設選中直式
-    verticalBtn.classList.add('selected');
-
+    if (layoutDirection === 'vertical') {
+        verticalBtn.classList.add('selected');
+        horizontalBtn.classList.remove('selected');
+    } else {
+        horizontalBtn.classList.add('selected');
+        verticalBtn.classList.remove('selected');
+    }
     verticalBtn.onclick = function() {
         layoutDirection = 'vertical';
         verticalBtn.classList.add('selected');
@@ -690,6 +693,10 @@ window.addEventListener('DOMContentLoaded', function() {
         updateLayout();
     };
 });
+
+// 2. 跳轉 print.html 時帶上 layoutDirection 參數（假設有 window.open 或 location.href 相關程式，請在那裡加上 layoutDirection）
+// 例如：
+// window.open(`print.html?columnNum=${columnNum}&iurl=${allImg.join(',')}&layoutDirection=${layoutDirection}`);
 
 // 3. 更新內容排列方向
 function updateLayout() {

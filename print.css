@@ -11,16 +11,15 @@ body {
 
 #print_box {
     margin: 0 auto;
-    /* 預設A4直式 */
     width: 210mm;
     min-height: 297mm;
     max-width: 210mm;
     box-sizing: border-box;
     background: #fff;
     page-break-after: always;
+    overflow: hidden;
 }
 
-/* 橫式模式 */
 body.landscape #print_box {
     width: 297mm;
     min-height: 210mm;
@@ -44,7 +43,11 @@ body.landscape #print_box {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    max-width: calc(100% / 1 - 8mm);
 }
+.item_img2 { max-width: calc(50% - 8mm); }
+.item_img3 { max-width: calc(33.33% - 8mm); }
+.item_img4 { max-width: calc(25% - 8mm); }
 
 .image_box {
     width: 100%;
@@ -55,9 +58,10 @@ body.landscape #print_box {
 
 .image {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 90vh;
     object-fit: contain;
     page-break-inside: avoid;
+    display: block;
 }
 
 @media print {
@@ -70,6 +74,7 @@ body.landscape #print_box {
     #print_box {
         margin: 0 auto;
         page-break-after: always;
+        overflow: hidden;
     }
     body.portrait #print_box {
         width: 210mm !important;
