@@ -35,7 +35,7 @@ const monday = window.mondaySdk();
 // let userId = '';
 
 // 你的API Key
-const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjMzNTg4OTE2MCwiYWFpIjoxMSwidWlkIjo1NzQ0NDIwOSwiaWFkIjoiMjAyNC0wMy0yMVQwMjo0MDoyNS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTIyNjMxODUsInJnbiI6InVzZTEifQ.TWvpOEhzwOTH5TeoaFeIbkUJAMSIWBytryEIH4cUrEw';
+const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjUzOTAzODMyMCwiYWFpIjoxMSwidWlkIjo3ODM0NDk4NCwiaWFkIjoiMjAyNS0wNy0xNVQwMDoyNToxMS45MDNaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6Mjk1NTc5MjQsInJnbiI6ImFwc2UyIn0.O-oaaiXD6aveBl55WU8gZEGFgtacr6CtCO0xbRBUATw';
 
 // 你想要抓取的board ID
 let boardId
