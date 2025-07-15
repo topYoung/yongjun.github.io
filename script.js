@@ -696,14 +696,17 @@ function updateLayout() {
     const content = document.getElementById('content');
     if (content) {
         if (layoutDirection === 'vertical') {
+            content.classList.add('a4-portrait');
+            content.classList.remove('a4-landscape');
             content.style.display = 'flex';
             content.style.flexDirection = 'column';
         } else {
+            content.classList.add('a4-landscape');
+            content.classList.remove('a4-portrait');
             content.style.display = 'flex';
             content.style.flexDirection = 'row';
         }
     }
-    // 重新渲染內容
     createImage();
 }
 
