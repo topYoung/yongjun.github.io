@@ -1043,7 +1043,7 @@ function generatePDF() {
     newWin.document.write('</head><body>');
     // newWin.document.write('<html><head><title>Print</title></head><body>');
     newWin.document.write('<div class="print-content">' + divToPrint.innerHTML + '</div>');
-    newWin.document.write('<button id="print_btn" onclick="goPrint()">列  印</button>')
+    newWin.document.write('<button id="pdf_btn" onclick="goPrint()">列  印</button>')
     newWin.document.write('<div id="loader" style="z-index: 900"><img src="loading.svg"></div>')
     newWin.document.write('<script src="print.js"></script>');
     newWin.document.write('</body></html>');
