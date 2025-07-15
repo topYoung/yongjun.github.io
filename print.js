@@ -43,6 +43,7 @@ function renderImages() {
     const cellW = a4w / colsPerPage;
     const cellH = a4h / rowsPerPage;
     const imgsPerPage = rowsPerPage * colsPerPage;
+    console.log('allImg:', allImg); 
     for (let i = 0; i < allImg.length; i += imgsPerPage) {
         const pageDiv = document.createElement('div');
         console.log('pageDiv:', pageDiv);
