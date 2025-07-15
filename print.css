@@ -1,39 +1,9 @@
 @page {
-    size: A4;
-    margin: 0;
+    position: absolute;
+    width: 297mm; /* A4 紙張的寬度 */
+    height: 210mm; /* A4 紙張的高度 */
+    margin: 0 auto; /* 居中對齊 */
+    padding: 0 10mm; /* 邊距 */
 }
-body {
-    margin: 0;
-    padding: 0;
-    background: #fff;
-}
-.page {
-    page-break-after: always;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.cell {
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-}
-.image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-body.portrait .page {
-    width: 210mm !important;
-    height: 297mm !important;
-}
-body.landscape .page {
-    width: 297mm !important;
-    height: 210mm !important;
-}
+
+/* 其他 CSS 規則 */
