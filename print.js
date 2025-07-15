@@ -35,6 +35,7 @@ if (layoutDirection === 'vertical') {
 // 動態產生圖片分頁
 function renderImages() {
     const content = document.getElementById('content');
+    console.log('content:', content);
     content.innerHTML = '';
     // A4尺寸（mm），需轉換為 px，假設 1mm = 3.78px
     const mm2px = mm => mm * 3.78;
