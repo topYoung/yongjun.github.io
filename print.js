@@ -101,6 +101,8 @@ function renderImages() {
         content.appendChild(pageDiv);
         pageIdx++;
     }
+
+    loader.style.visibility = 'hidden'
 }
 
 // 初始化
