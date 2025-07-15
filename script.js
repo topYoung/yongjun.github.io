@@ -646,6 +646,63 @@ function getOne(index) {
     return one
 }
 
+// 1. 新增全域變數
+let layoutDirection = 'vertical'; // 預設直式
+
+// 2. 監聽點擊事件
+window.addEventListener('DOMContentLoaded', function() {
+    const verticalBtn = document.getElementById('direction_vertical');
+    const horizontalBtn = document.getElementById('direction_horizontal');
+
+    // 預設選中直式
+    verticalBtn.classList.add('selected');
+
+    verticalBtn.onclick = function() {
+        layoutDirection = 'vertical';
+        verticalBtn.classList.add('selected');
+        horizontalBtn.classList.remove('selected');
+        updateLayout();
+    };
+    horizontalBtn.onclick = function() {
+        layoutDirection = 'horizontal';
+        horizontalBtn.classList.add('selected');
+        verticalBtn.classList.remove('selected');
+        updateLayout();
+    };
+});
+
+// 3. 更新內容排列方向
+function updateLayout() {
+    const content = document.getElementById('content');
+    if (content) {
+        if (layoutDirection === 'vertical') {
+            content.style.display = 'flex';
+            content.style.flexDirection = 'column';
+        } else {
+            content.style.display = 'flex';
+            content.style.flexDirection = 'row';
+        }
+    }
+    // 重新渲染內容
+    createImage();
+}
+
+// 4. 在 createImage() 開頭加上根據 layoutDirection 設定內容排列
+const originalCreateImage = createImage;
+createImage = function() {
+    const content = document.getElementById('content');
+    if (content) {
+        if (layoutDirection === 'vertical') {
+            content.style.display = 'flex';
+            content.style.flexDirection = 'column';
+        } else {
+            content.style.display = 'flex';
+            content.style.flexDirection = 'row';
+        }
+    }
+    originalCreateImage.apply(this, arguments);
+};
+
 let oldNum = 2
 document.addEventListener('DOMContentLoaded', function() {
     let infoIcon = document.querySelector('.gg-info');

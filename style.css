@@ -537,3 +537,24 @@ input[type=text] {
     }
 
 }
+
+#layout_direction {
+    margin-bottom: 10px;
+}
+#direction_box {
+    display: flex;
+    gap: 10px;
+}
+.direction_box_item {
+    padding: 6px 16px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #f5f5f5;
+    user-select: none;
+}
+.direction_box_item.selected {
+    background: #0073ea;
+    color: #fff;
+    border-color: #0073ea;
+}
