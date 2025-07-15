@@ -1,7 +1,7 @@
 let canPrint = false
 loader.style.visibility = 'visible'
 // print_btn.onclick = function() {
-checkLoad()
+// checkLoad()
 //     if(canPrint == true){
 
 //     }
