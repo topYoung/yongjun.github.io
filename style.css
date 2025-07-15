@@ -507,41 +507,6 @@ input[type=text] {
     padding: 0 10mm; /* 邊距 */
 }
 
-/* 預覽區塊寬度對齊 A4 */
-#content.a4-portrait {
-    max-width: 794px;
-    margin: 0 auto;
-}
-#content.a4-landscape {
-    max-width: 1123px;
-    margin: 0 auto;
-}
-
-/* 列印時自動切換紙張方向 */
-@media print {
-    #content {
-        margin: 0 auto !important;
-    }
-    .a4-portrait {
-        width: 794px !important;
-        height: 1123px !important;
-        page-break-after: always;
-    }
-    .a4-landscape {
-        width: 1123px !important;
-        height: 794px !important;
-        page-break-after: always;
-    }
-    @page {
-        size: A4 portrait;
-    }
-    .a4-landscape {
-        /* 某些瀏覽器支援 */
-        -webkit-writing-mode: horizontal-tb;
-        writing-mode: horizontal-tb;
-    }
-}
-
 @media print {
     @page {
         size: A4 landscape; /* 指定 A4 紙張的橫印方向 */
@@ -571,25 +536,4 @@ input[type=text] {
         content: ""; /* 移除頁數的顯示 */
     }
 
-}
-
-#layout_direction {
-    margin-bottom: 10px;
-}
-#direction_box {
-    display: flex;
-    gap: 10px;
-}
-.direction_box_item {
-    padding: 6px 16px;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-    cursor: pointer;
-    background: #f5f5f5;
-    user-select: none;
-}
-.direction_box_item.selected {
-    background: #0073ea;
-    color: #fff;
-    border-color: #0073ea;
 }
