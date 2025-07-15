@@ -45,6 +45,7 @@ function renderImages() {
     const imgsPerPage = rowsPerPage * colsPerPage;
     for (let i = 0; i < allImg.length; i += imgsPerPage) {
         const pageDiv = document.createElement('div');
+        console.log('pageDiv:', pageDiv);
         pageDiv.className = 'page';
         pageDiv.style.width = a4w + 'px';
         pageDiv.style.height = a4h + 'px';
