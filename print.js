@@ -107,7 +107,7 @@ function renderImages() {
 window.onload = function() {
     document.body.style.overflowY = "scroll";
     renderImages();
-    document.getElementById('print_btn').onclick = function() {
+    document.getElementById('pdf_btn').onclick = function() {
         window.print();
     };
     checkLoad();
