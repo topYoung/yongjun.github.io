@@ -110,7 +110,7 @@ window.onload = function() {
     // document.getElementById('pdf_btn').onclick = function() {
     //     window.print();
     // };
-    checkLoad();
+    // checkLoad();
 }
 
 function checkLoad() {
