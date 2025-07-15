@@ -486,6 +486,7 @@ function createImage() {
 }
 
 function setImage() {
+    loader.style.visibility = 'visible'
     content.innerHTML = '';
     if (allImg.length == 0) {
         loader.style.visibility = 'hidden'
@@ -684,6 +685,7 @@ window.addEventListener('DOMContentLoaded', function() {
         layoutDirection = 'vertical';
         verticalBtn.classList.add('selected');
         horizontalBtn.classList.remove('selected');
+
         updateLayout();
     };
     horizontalBtn.onclick = function() {
