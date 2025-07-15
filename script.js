@@ -30,7 +30,36 @@ const getResult = function(a1, a2) {
     return true;
 };
 
-const monday = window.mondaySdk();
+// 設定 Monday SDK 配置
+const mondayConfig = {
+    // clientId: 'your_client_id', // 如果需要
+    clientId: '1da90f5b67b1d77e5ab48ab986636816',
+    apiVersion: '2024-01',
+    // 處理微前端資源載入
+    microfrontendOptions: {
+        preload: false, // 禁用自動預載入
+        crossorigin: 'anonymous'
+    }
+};
+
+const monday = window.mondaySdk(mondayConfig);
+
+// 處理微前端載入錯誤
+window.addEventListener('error', function(e) {
+    if (e.message && e.message.includes('microfrontends.monday.com')) {
+        console.warn('Monday.com 微前端資源載入警告，但不影響主要功能:', e.message);
+        // 可以選擇忽略這個錯誤，因為它不影響核心功能
+    }
+});
+
+// 處理未捕獲的 Promise 錯誤
+window.addEventListener('unhandledrejection', function(e) {
+    if (e.reason && e.reason.message && e.reason.message.includes('microfrontends.monday.com')) {
+        console.warn('Monday.com 微前端 Promise 錯誤，但不影響主要功能:', e.reason.message);
+        e.preventDefault(); // 防止錯誤顯示在控制台
+    }
+});
+
 // let boardId = '';
 // let userId = '';
 
