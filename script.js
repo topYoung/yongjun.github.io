@@ -667,7 +667,7 @@ function getOne(index) {
 }
 
 // 1. 新增全域變數
-let layoutDirection = 'vertical'; // 預設直式
+let layoutDirection = 'horizontal'; // 預設直式
 
 // 1. 根據預設排列方向亮起對應按鈕
 window.addEventListener('DOMContentLoaded', function() {
