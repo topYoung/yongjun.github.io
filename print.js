@@ -23,7 +23,7 @@ if (layoutDirection === 'vertical') {
 }
 
 function renderImages() {
-    const content = document.getElementById('print-content');
+    const content = document.getElementById('content');
     console.log('content:', content);
     content.innerHTML = '';
     const mm2px = mm => mm * 3.78;
