@@ -62,56 +62,51 @@
         document.body.classList.remove('portrait');
     }
 
-    // 動態產生圖片分組
+    // 動態產生圖片分頁
     function renderImages() {
         const content = document.getElementById('content');
         content.innerHTML = '';
-        if (layoutDirection === 'vertical') {
-            // 直式：每 row 放 columnNum 張圖
-            for (let i = 0; i < allImg.length; i += columnNum) {
+        // A4尺寸（mm），需轉換為 px，假設 1mm = 3.78px
+        const mm2px = mm => mm * 3.78;
+        const a4w = layoutDirection === 'vertical' ? mm2px(210) : mm2px(297);
+        const a4h = layoutDirection === 'vertical' ? mm2px(297) : mm2px(210);
+        const colNum = columnNum;
+        const rowHeight = layoutDirection === 'vertical' ? mm2px(120) : mm2px(80); // 直式每行高度、橫式每行高度
+        const imgPerRow = colNum;
+        const rowsPerPage = Math.floor(a4h / rowHeight);
+        const imgsPerPage = imgPerRow * rowsPerPage;
+        let pageIdx = 0;
+        for (let i = 0; i < allImg.length; i += imgsPerPage) {
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'page';
+            // 直式時加旋轉
+            if (layoutDirection === 'vertical') {
+                pageDiv.classList.add('portrait-page');
+            }
+            for (let j = 0; j < imgsPerPage && (i + j) < allImg.length; j += imgPerRow) {
                 const rowDiv = document.createElement('div');
                 rowDiv.style.display = 'flex';
                 rowDiv.style.flexDirection = 'row';
                 rowDiv.style.width = '100%';
-                for (let j = 0; j < columnNum && (i + j) < allImg.length; j++) {
+                for (let k = 0; k < imgPerRow && (i + j + k) < allImg.length; k++) {
                     const div = document.createElement('div');
                     const div2 = document.createElement('div');
                     const img = document.createElement('img');
-                    div.id = 'img_div_' + (i + j);
-                    img.id = 'img_' + (i + j);
-                    div2.id = 'img_div2_' + (i + j);
+                    div.id = 'img_div_' + (i + j + k);
+                    img.id = 'img_' + (i + j + k);
+                    div2.id = 'img_div2_' + (i + j + k);
                     div.className = 'item_img' + columnNum;
                     div2.className = 'image_box';
-                    img.src = allImg[i + j];
+                    img.src = allImg[i + j + k];
                     img.className = 'image';
                     div.appendChild(div2);
                     div2.appendChild(img);
                     rowDiv.appendChild(div);
                 }
-                content.appendChild(rowDiv);
+                pageDiv.appendChild(rowDiv);
             }
-        } else {
-            // 橫式：單行橫向排列
-            const rowDiv = document.createElement('div');
-            rowDiv.style.display = 'flex';
-            rowDiv.style.flexDirection = 'row';
-            rowDiv.style.width = '100%';
-            for (let i = 0; i < allImg.length; i++) {
-                const div = document.createElement('div');
-                const div2 = document.createElement('div');
-                const img = document.createElement('img');
-                div.id = 'img_div_' + i;
-                img.id = 'img_' + i;
-                div2.id = 'img_div2_' + i;
-                div.className = 'item_img' + columnNum;
-                div2.className = 'image_box';
-                img.src = allImg[i];
-                img.className = 'image';
-                div.appendChild(div2);
-                div2.appendChild(img);
-                rowDiv.appendChild(div);
-            }
-            content.appendChild(rowDiv);
+            content.appendChild(pageDiv);
+            pageIdx++;
         }
     }
 

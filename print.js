@@ -27,7 +27,11 @@ function checkLoad() {
 
         const num = id.split('_')[1]
         console.log('num=', num)
-        const div2 = document.getElementById('img_div2_' + num)
+        // 支援多分頁
+        let div2 = item.parentElement;
+        if (!div2 || !div2.id.startsWith('img_div2_')) {
+            div2 = document.getElementById('img_div2_' + num)
+        }
         const w1 = div2.offsetWidth
         const h1 = div2.offsetHeight
         img.addEventListener("load", () => {
