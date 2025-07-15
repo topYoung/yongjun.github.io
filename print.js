@@ -40,88 +40,58 @@ function renderImages() {
     const mm2px = mm => mm * 3.78;
     const a4w = layoutDirection === 'vertical' ? mm2px(210) : mm2px(297);
     const a4h = layoutDirection === 'vertical' ? mm2px(297) : mm2px(210);
-    // 預設每張圖高度（含間距），可調整
-    const imgH = layoutDirection === 'vertical' ? mm2px(120) : mm2px(80);
-    const imgW = a4w / columnNum;
-    let pageImgs = [];
-    let curH = 0;
-    let pageIdx = 0;
-    for (let i = 0; i < allImg.length; i++) {
-        if (curH + imgH > a4h || pageImgs.length === 0) {
-            // 新增一頁
-            if (pageImgs.length > 0) {
-                // 塞進上一頁
-                const pageDiv = document.createElement('div');
-                pageDiv.className = 'page';
-                pageDiv.style.width = a4w + 'px';
-                pageDiv.style.height = a4h + 'px';
-                pageDiv.style.border = '2px solid red';
-                pageDiv.style.boxSizing = 'border-box';
-                // 塞 row
-                for (const rowImgs of pageImgs) {
-                    const rowDiv = document.createElement('div');
-                    rowDiv.style.display = 'flex';
-                    rowDiv.style.flexDirection = 'row';
-                    rowDiv.style.width = '100%';
-                    rowDiv.style.height = imgH + 'px';
-                    for (let k = 0; k < rowImgs.length; k++) {
-                        const div = document.createElement('div');
-                        const div2 = document.createElement('div');
-                        const img = document.createElement('img');
-                        div.id = 'img_div_' + rowImgs[k].idx;
-                        img.id = 'img_' + rowImgs[k].idx;
-                        div2.id = 'img_div2_' + rowImgs[k].idx;
-                        div.className = 'item_img' + columnNum;
-                        div2.className = 'image_box';
-                        img.src = rowImgs[k].url;
-                        img.className = 'image';
-                        div.appendChild(div2);
-                        div2.appendChild(img);
-                        rowDiv.appendChild(div);
-                    }
-                    pageDiv.appendChild(rowDiv);
-                }
-                content.appendChild(pageDiv);
-            }
-            // 開新頁
-            pageImgs = [];
-            curH = 0;
-            pageIdx++;
-        }
-        // 塞進本頁
-        let lastRow = pageImgs[pageImgs.length - 1];
-        if (!lastRow || lastRow.length >= columnNum) {
-            lastRow = [];
-            pageImgs.push(lastRow);
-            curH += imgH;
-        }
-        lastRow.push({ url: allImg[i], idx: i });
+    let rowsPerPage, colsPerPage;
+    if (layoutDirection === 'vertical') {
+        // 直式：自動判斷3或4列哪個較佳
+        // 以欄數為主，計算每格高度
+        let try3 = a4h / 3, try4 = a4h / 4;
+        // 假設圖片比例約4:3，視覺上較佳的格子高度
+        let score3 = Math.abs((try3 / (a4w / columnNum)) - (4/3));
+        let score4 = Math.abs((try4 / (a4w / columnNum)) - (4/3));
+        rowsPerPage = score3 < score4 ? 3 : 4;
+        colsPerPage = columnNum;
+    } else {
+        // 橫式：每頁2列，欄數依使用者選擇
+        rowsPerPage = 2;
+        colsPerPage = columnNum;
     }
-    // 處理最後一頁
-    if (pageImgs.length > 0) {
+    const cellW = a4w / colsPerPage;
+    const cellH = a4h / rowsPerPage;
+    const imgsPerPage = rowsPerPage * colsPerPage;
+    let pageIdx = 0;
+    for (let i = 0; i < allImg.length; i += imgsPerPage) {
         const pageDiv = document.createElement('div');
         pageDiv.className = 'page';
         pageDiv.style.width = a4w + 'px';
         pageDiv.style.height = a4h + 'px';
         pageDiv.style.border = '2px solid red';
         pageDiv.style.boxSizing = 'border-box';
-        for (const rowImgs of pageImgs) {
+        for (let r = 0; r < rowsPerPage; r++) {
             const rowDiv = document.createElement('div');
             rowDiv.style.display = 'flex';
             rowDiv.style.flexDirection = 'row';
             rowDiv.style.width = '100%';
-            rowDiv.style.height = imgH + 'px';
-            for (let k = 0; k < rowImgs.length; k++) {
+            rowDiv.style.height = cellH + 'px';
+            for (let c = 0; c < colsPerPage; c++) {
+                const imgIdx = i + r * colsPerPage + c;
+                if (imgIdx >= allImg.length) break;
                 const div = document.createElement('div');
                 const div2 = document.createElement('div');
                 const img = document.createElement('img');
-                div.id = 'img_div_' + rowImgs[k].idx;
-                img.id = 'img_' + rowImgs[k].idx;
-                div2.id = 'img_div2_' + rowImgs[k].idx;
-                div.className = 'item_img' + columnNum;
+                div.id = 'img_div_' + imgIdx;
+                img.id = 'img_' + imgIdx;
+                div2.id = 'img_div2_' + imgIdx;
+                div.className = 'item_img' + colsPerPage;
                 div2.className = 'image_box';
-                img.src = rowImgs[k].url;
+                div.style.width = cellW + 'px';
+                div.style.height = cellH + 'px';
+                div2.style.width = '100%';
+                div2.style.height = '100%';
+                img.src = allImg[imgIdx];
                 img.className = 'image';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
                 div.appendChild(div2);
                 div2.appendChild(img);
                 rowDiv.appendChild(div);
@@ -129,6 +99,7 @@ function renderImages() {
             pageDiv.appendChild(rowDiv);
         }
         content.appendChild(pageDiv);
+        pageIdx++;
     }
 }
 
