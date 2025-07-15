@@ -43,11 +43,16 @@ body.landscape #print_box {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width: calc(100% / 1 - 8mm);
 }
-.item_img2 { max-width: calc(50% - 8mm); }
-.item_img3 { max-width: calc(33.33% - 8mm); }
-.item_img4 { max-width: calc(25% - 8mm); }
+
+body.portrait .item_img1, body.portrait .item_img2 {
+    max-width: calc(50% - 8mm);
+    height: 120mm;
+}
+body.landscape .item_img1, body.landscape .item_img2, body.landscape .item_img3, body.landscape .item_img4 {
+    max-width: calc(25% - 8mm);
+    height: 80mm;
+}
 
 .image_box {
     width: 100%;
