@@ -23,7 +23,8 @@ if (layoutDirection === 'vertical') {
 }
 
 function renderImages() {
-    const content = document.getElementById('content');
+    const content = document.getElementById('print-content');
+    console.log('content:', content);
     content.innerHTML = '';
     const mm2px = mm => mm * 3.78;
     const a4w = layoutDirection === 'vertical' ? mm2px(210) : mm2px(297);
@@ -77,7 +78,7 @@ function renderImages() {
     }
 }
 
-document.getElementById('print_btn').onclick = function() {
+document.getElementById('pdf_btn').onclick = function() {
     window.print();
 };
 
