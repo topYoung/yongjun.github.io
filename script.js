@@ -460,89 +460,151 @@ function createImage() {
 
 function setImage() {
     console.log('allImg.length=', allImg.length)
-    loader.style.visibility = 'visible'
+    console.log('allImg=', allImg)
     if (allImg.length == 0) {
         loader.style.visibility = 'hidden'
     }
     let n = 0
-    // 橫式：每頁2列，欄數同 columnNum
-    // 直式：每頁3或4列（自動判斷），欄數同 columnNum
-    let rowsPerPage, colsPerPage;
     if (layoutDirection === 'vertical') {
-        // 直式自動判斷3或4列
+        // 直式：每頁3或4列，欄數同 columnNum
         const contentH = content.offsetHeight || 1122; // A4 px fallback
         const contentW = content.offsetWidth || 794;
         let try3 = contentH / 3, try4 = contentH / 4;
         let score3 = Math.abs((try3 / (contentW / columnNum)) - (4/3));
         let score4 = Math.abs((try4 / (contentW / columnNum)) - (4/3));
-        rowsPerPage = score3 < score4 ? 3 : 4;
-        colsPerPage = columnNum;
-    } else {
-        rowsPerPage = 2;
-        colsPerPage = columnNum;
-    }
-    const imgsPerPage = rowsPerPage * colsPerPage;
-    let pageIdx = 0;
-    for (let i = 0; i < allImg.length; i += imgsPerPage) {
-        // 每頁一個分頁容器
-        let pageDiv = document.createElement('div');
-        pageDiv.className = 'page_group';
-        for (let r = 0; r < rowsPerPage; r++) {
-            let rowDiv = document.createElement('div');
-            rowDiv.className = 'row_group';
-            for (let c = 0; c < colsPerPage; c++) {
-                const k = i + r * colsPerPage + c;
-                if (k >= allImg.length) break;
-                let div = document.createElement('div')
-                let div2 = document.createElement('div')
-                let div3 = document.createElement('div')
-                let img = document.createElement('img')
-                div.id = "img_div_" + k
-                div3.id = "img_div3_" + k
-                div3.name = imgData[k].name
-                div3.column_values = imgData[k].column_values
-                img.id = "img_" + k
-                div2.id = "img_div2_" + k
-                if (columnNum == 1) div.className = 'item_img1'
-                if (columnNum == 2) div.className = 'item_img2'
-                if (columnNum == 3) div.className = 'item_img3'
-                if (columnNum == 4) div.className = 'item_img4'
-                div2.className = 'image_box'
-                div3.className = 'image_box_right'
-                img.src = allImg[k]
-                img.className = "image"
-                div.appendChild(div2)
-                div.appendChild(div3)
-                div2.appendChild(img)
-                rowDiv.appendChild(div)
-                img.onload = function() {
-                    const w = img.offsetWidth
-                    const h = img.offsetHeight
-                    const w1 = div2.offsetWidth
-                    const h1 = div2.offsetHeight
-                    const rate = h / w
-                    const rate1 = h1 / w1
-                    if (rate > rate1) {
-                        img.style.height = "96%"
-                        img.style.width = h1 * 0.96 / rate + "px"
-                    } else {
-                        img.style.width = "96%"
-                        img.style.height = w1 * 0.96 * rate + "px"
-                    }
-                    n++
-                    if (n == allImg.length) {
-                        clearData()
-                        setData()
-                        loader.style.visibility = 'hidden'
+        let rowsPerPage = score3 < score4 ? 3 : 4;
+        let colsPerPage = columnNum;
+        const imgsPerPage = rowsPerPage * colsPerPage;
+        for (let i = 0; i < allImg.length; i += imgsPerPage) {
+            let pageDiv = document.createElement('div');
+            pageDiv.className = 'page_group';
+            for (let r = 0; r < rowsPerPage; r++) {
+                let rowDiv = document.createElement('div');
+                rowDiv.className = 'row_group';
+                for (let c = 0; c < colsPerPage; c++) {
+                    const k = i + r * colsPerPage + c;
+                    if (k >= allImg.length) break;
+                    let div = document.createElement('div')
+                    let div2 = document.createElement('div')
+                    let div3 = document.createElement('div')
+                    let img = document.createElement('img')
+                    div.id = "img_div_" + k
+                    div3.id = "img_div3_" + k
+                    div3.name = imgData[k].name
+                    div3.column_values = imgData[k].column_values
+                    img.id = "img_" + k
+                    div2.id = "img_div2_" + k
+                    if (columnNum == 1) div.className = 'item_img1'
+                    if (columnNum == 2) div.className = 'item_img2'
+                    if (columnNum == 3) div.className = 'item_img3'
+                    if (columnNum == 4) div.className = 'item_img4'
+                    div2.className = 'image_box'
+                    div3.className = 'image_box_right'
+                    img.src = allImg[k]
+                    img.className = "image"
+                    div.appendChild(div2)
+                    div.appendChild(div3)
+                    div2.appendChild(img)
+                    rowDiv.appendChild(div)
+                    img.onload = function() {
+                        const w = img.offsetWidth
+                        const h = img.offsetHeight
+                        const w1 = div2.offsetWidth
+                        const h1 = div2.offsetHeight
+                        const rate = h / w
+                        const rate1 = h1 / w1
+                        if (rate > rate1) {
+                            img.style.height = "96%"
+                            img.style.width = h1 * 0.96 / rate + "px"
+                        } else {
+                            img.style.width = "96%"
+                            img.style.height = w1 * 0.96 * rate + "px"
+                        }
+                        n++
+                        if (n == allImg.length) {
+                            clearData()
+                            setData()
+                            loader.style.visibility = 'hidden'
+                        }
                     }
                 }
+                pageDiv.appendChild(rowDiv)
             }
-            pageDiv.appendChild(rowDiv)
+            content.appendChild(pageDiv)
         }
-        content.appendChild(pageDiv)
-        pageIdx++;
+    } else {
+        // 原本橫式邏輯
+        for (let k = 0; k < allImg.length; k++) {
+            let div = document.createElement('div')
+            let div2 = document.createElement('div')
+            let div3 = document.createElement('div')
+            let img = document.createElement('img')
+            div.id = "img_div_" + k
+            div3.id = "img_div3_" + k
+            div3.name = imgData[k].name
+            div3.column_values = imgData[k].column_values
+            img.id = "img_" + k
+            div2.id = "img_div2_" + k
+            if (columnNum == 1) {
+                div.className = 'item_img1'
+            }
+            if (columnNum == 2) {
+                div.className = 'item_img2'
+            }
+            if (columnNum == 3) {
+                div.className = 'item_img3'
+            }
+            if (columnNum == 4) {
+                div.className = 'item_img4'
+            }
+            div2.className = 'image_box'
+            div3.className = 'image_box_right'
+            img.src = allImg[k]
+            img.className = "image"
+            if (k >= columnNum * 2) {
+                if (k % (columnNum * 2) == 0) {
+                    let div4 = document.createElement('div')
+                    div4.className = 'title'
+                    let h2 = document.createElement('h2')
+                    let h3 = document.createElement('h3')
+                    h2.className = 'title_text'
+                    h3.className = 'subTitle'
+                    h2.innerHTML = title_text.innerHTML
+                    h3.innerHTML = subTitle.innerHTML
+                    div4.appendChild(h2)
+                    div4.appendChild(h3)
+                    content.appendChild(div4)
+                }
+            }
+            div.appendChild(div2)
+            div.appendChild(div3)
+            div2.appendChild(img)
+            content.appendChild(div)
+            img.onload = function() {
+                const w = img.offsetWidth
+                const h = img.offsetHeight
+                const w1 = div2.offsetWidth
+                const h1 = div2.offsetHeight
+                const rate = h / w
+                const rate1 = h1 / w1
+                if (rate > rate1) {
+                    img.style.height = "96%"
+                    img.style.width = h1 * 0.96 / rate + "px"
+                } else {
+                    img.style.width = "96%"
+                    img.style.height = w1 * 0.96 * rate + "px"
+                }
+                n++
+                if (n == allImg.length) {
+                    clearData()
+                    setData()
+                    loader.style.visibility = 'hidden'
+                }
+            }
+        }
     }
 }
+
 
 function getOne(index) {
     const len = itemList.length
@@ -614,8 +676,6 @@ function getOne(index) {
 }
 
 let oldNum = 2
-let layoutDirection = 'horizontal'; // 預設橫式
-
 document.addEventListener('DOMContentLoaded', function() {
     let infoIcon = document.querySelector('.gg-info');
     let tooltip = document.getElementById('customTooltip');
@@ -699,22 +759,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     }
-    // 監聽排列方向 radio 切換
-    const radioHorizontal = document.getElementById('direction_horizontal');
-    const radioVertical = document.getElementById('direction_vertical');
-    radioHorizontal.checked = true;
-    radioHorizontal.addEventListener('change', function() {
-        if (this.checked) {
-            layoutDirection = 'horizontal';
-            resetColumn();
-        }
-    });
-    radioVertical.addEventListener('change', function() {
-        if (this.checked) {
-            layoutDirection = 'vertical';
-            resetColumn();
-        }
-    });
     // var checkbox = document.getElementById('all_item_input');
 
     // checkbox.addEventListener('change', function() {
