@@ -121,3 +121,20 @@ function updateVerticalModeClass() {
 // 載入時讀取 localStorage 的排列模式
 let layoutDirection = localStorage.getItem('layoutDirection') || 'horizontal';
 updateVerticalModeClass();
+
+// 新增：每頁都插入標題與副標題（直式/橫式皆適用）
+function insertTitleToPage(pageDiv) {
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'title';
+    let h2 = document.createElement('h2');
+    let h3 = document.createElement('h3');
+    h2.className = 'title_text';
+    h3.className = 'subTitle';
+    // 取用現有標題內容
+    h2.innerHTML = document.getElementById('title_text') ? document.getElementById('title_text').innerHTML : '';
+    h3.innerHTML = document.getElementById('subTitle') ? document.getElementById('subTitle').innerHTML : '';
+    titleDiv.appendChild(h2);
+    titleDiv.appendChild(h3);
+    pageDiv.insertBefore(titleDiv, pageDiv.firstChild);
+}
+// 請在分頁產生時（每個 .page div）呼叫 insertTitleToPage(pageDiv)
