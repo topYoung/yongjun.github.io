@@ -8,6 +8,31 @@ checkLoad()
 // }
 window.onload = function() {
     document.body.style.overflowY = "scroll";
+    // 判斷是否為直式列印，若是則每頁都插入標題副標
+    const isVertical = document.querySelector('.print-content2') !== null;
+    if (isVertical) {
+        // 取得所有分頁
+        const pages = document.querySelectorAll('.print-content2');
+        pages.forEach(page => {
+            // 檢查是否已經有標題，避免重複
+            if (!page.querySelector('.title')) {
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'title';
+                let h2 = document.createElement('h2');
+                let h3 = document.createElement('h3');
+                h2.className = 'title_text';
+                h3.className = 'subTitle';
+                // 從第一頁抓標題內容
+                const firstTitle = document.querySelector('.title_text');
+                const firstSub = document.querySelector('.subTitle');
+                h2.innerHTML = firstTitle ? firstTitle.innerHTML : '';
+                h3.innerHTML = firstSub ? firstSub.innerHTML : '';
+                titleDiv.appendChild(h2);
+                titleDiv.appendChild(h3);
+                page.insertBefore(titleDiv, page.firstChild);
+            }
+        });
+    }
 }
 
 function checkLoad() {
