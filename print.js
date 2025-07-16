@@ -86,7 +86,16 @@ function setPrintPageOrientation() {
     }
     document.head.appendChild(style);
 }
-// 在 goPrint() 執行 window.print() 前呼叫 setPrintPageOrientation()
+// 先定義 goPrint 為 function，然後再包裝
+function goPrint() {
+    if (canPrint == true) {
+        pdf_btn.style.display = 'none'
+        window.print()
+        window.close();
+    }
+}
+
+// 包裝 goPrint，列印前切換紙張方向
 const oldGoPrint = goPrint;
 goPrint = function() {
     setPrintPageOrientation();
