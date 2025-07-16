@@ -466,8 +466,9 @@ function setImage() {
     }
     let n = 0
     if (layoutDirection === 'vertical') {
-        // 直式：用和橫式一樣的方式秀圖，但 content 寬度較小
+        // 直式：用和橫式一樣的方式秀圖，但 content 寬度較小且置中
         content.style.width = '600px';
+        content.style.margin = '0 auto';
         for (let k = 0; k < allImg.length; k++) {
             let div = document.createElement('div')
             let div2 = document.createElement('div')
@@ -516,6 +517,7 @@ function setImage() {
     } else {
         // 橫式：維持原本寬度
         content.style.width = '';
+        content.style.margin = '';
         for (let k = 0; k < allImg.length; k++) {
             let div = document.createElement('div')
             let div2 = document.createElement('div')
@@ -1167,4 +1169,31 @@ function generatePDF() {
     //     trans.style.visibility = 'hidden'
     // });
 
+}
+
+// 修正切換排列方向時，欄位色塊不會消失
+function restoreColumnHighlight() {
+    if (oldColumn && oldColumn !== 'none') {
+        oldColumn.style.backgroundColor = 'lightblue';
+    }
+}
+
+// 監聽排列方向 radio 切換時，維持欄位色塊
+const radioHorizontal = document.getElementById('direction_horizontal');
+const radioVertical = document.getElementById('direction_vertical');
+if (radioHorizontal && radioVertical) {
+    radioHorizontal.addEventListener('change', function() {
+        if (this.checked) {
+            layoutDirection = 'horizontal';
+            resetColumn();
+            restoreColumnHighlight();
+        }
+    });
+    radioVertical.addEventListener('change', function() {
+        if (this.checked) {
+            layoutDirection = 'vertical';
+            resetColumn();
+            restoreColumnHighlight();
+        }
+    });
 }
