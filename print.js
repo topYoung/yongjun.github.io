@@ -26,6 +26,7 @@ window.addEventListener('message', function(event) {
     const data = event.data;
     if (!data || !data.allImg) return;
     let { allImg, titleText, subTitle, columnNum, layoutDirection } = data;
+    // allImg 已經是陣列，直接用
     let contentAll = document.getElementById('content_all');
     contentAll.innerHTML = '';
     setPrintPageOrientation(layoutDirection);
@@ -42,6 +43,7 @@ window.addEventListener('message', function(event) {
     for (let i = 0; i < allImg.length; i += itemsPerPage) {
         let pageDiv = document.createElement('div');
         pageDiv.className = 'page ' + (layoutDirection === 'vertical' ? 'print-content2' : 'print-content');
+        // 每頁都插入標題與副標題
         let titleDiv = document.createElement('div');
         titleDiv.className = 'title';
         let h2 = document.createElement('h2');
@@ -54,6 +56,7 @@ window.addEventListener('message', function(event) {
         titleDiv.appendChild(h3);
         pageDiv.appendChild(titleDiv);
         let group = allImg.slice(i, i + itemsPerPage);
+        let itemCount = 0;
         for (let row = 0; row < rowsPerPage; row++) {
             let rowDiv = document.createElement('div');
             rowDiv.style.display = 'flex';
@@ -70,13 +73,30 @@ window.addEventListener('message', function(event) {
                 imgBox.style.overflow = 'hidden';
                 let img = document.createElement('img');
                 img.className = 'image';
-                img.src = allImg[imgIdx];
+                // 支援 allImg[imgIdx] 為物件或字串
+                let imgUrl = allImg[imgIdx];
+                let imgText = '';
+                if (typeof imgUrl === 'object' && imgUrl !== null) {
+                    imgText = imgUrl.text;
+                    imgUrl = imgUrl.url;
+                }
+                img.src = imgUrl;
                 img.style.maxWidth = '100%';
                 img.style.maxHeight = '100%';
                 imgBox.appendChild(img);
+                // 新增：有內容才顯示說明資料
+                if (imgText && imgText.trim() !== '') {
+                    let descDiv = document.createElement('div');
+                    descDiv.className = 'image_desc';
+                    descDiv.innerText = imgText;
+                    imgBox.appendChild(descDiv);
+                }
                 rowDiv.appendChild(imgBox);
+                itemCount++;
+                if (itemCount >= itemsPerPage) break;
             }
             pageDiv.appendChild(rowDiv);
+            if (itemCount >= itemsPerPage) break;
         }
         contentAll.appendChild(pageDiv);
     }
