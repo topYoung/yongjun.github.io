@@ -458,61 +458,15 @@ function createImage() {
     setImage()
 }
 
-// 保留最上方這一份
-let oldNum = 2;
-let layoutDirection = 'horizontal'; // 預設橫式
-let changeDirection = false;
-let lastImgList = [];
-let lastImgCount = 0;
-let lastColumnNum = 2;
-let lastLayoutDirection = 'horizontal';
-
-function arraysEqual(a1, a2) {
-    if (a1.length !== a2.length) return false;
-    for (let i = 0; i < a1.length; i++) {
-        if (a1[i] !== a2[i]) return false;
-    }
-    return true;
-}
-
-function updateLayoutForColumnAndDirection() {
-    // 只更新 class/style，不重繪 DOM
-    const items = document.querySelectorAll('.item_img1, .item_img2, .item_img3, .item_img4');
-    // 直式時 content 置中且寬度較小，橫式恢復原寬度
-    if (layoutDirection === 'vertical') {
-        content.style.width = '600px';
-        content.style.margin = '0 auto';
-    } else {
-        content.style.width = '';
-        content.style.margin = '';
-    }
-    items.forEach(div => {
-        div.classList.remove('item_img1', 'item_img2', 'item_img3', 'item_img4');
-        div.classList.add('item_img' + columnNum);
-    });
-}
-
 function setImage() {
     console.log('allImg.length=', allImg.length)
     loader.style.visibility = 'visible'
     if (allImg.length == 0) {
         loader.style.visibility = 'hidden'
     }
-    // 判斷是否需要重繪
-    const needRedraw =
-        allImg.length !== lastImgCount ||
-        !arraysEqual(allImg, lastImgList);
-    if (!needRedraw && (columnNum !== lastColumnNum || layoutDirection !== lastLayoutDirection)) {
-        // 只更新 class/style，不重繪 DOM
-        updateLayoutForColumnAndDirection();
-        lastColumnNum = columnNum;
-        lastLayoutDirection = layoutDirection;
-        return;
-    }
-    // 需要重繪
-    content.innerHTML = '';
     let n = 0
     if (layoutDirection === 'vertical') {
+        // 直式：用和橫式一樣的方式秀圖，但 content 寬度較小且置中
         content.style.width = '600px';
         content.style.margin = '0 auto';
         for (let k = 0; k < allImg.length; k++) {
@@ -561,6 +515,7 @@ function setImage() {
             }
         }
     } else {
+        // 橫式：維持原本寬度
         content.style.width = '';
         content.style.margin = '';
         for (let k = 0; k < allImg.length; k++) {
@@ -632,11 +587,6 @@ function setImage() {
             }
         }
     }
-    // 更新快取
-    lastImgList = allImg.slice();
-    lastImgCount = allImg.length;
-    lastColumnNum = columnNum;
-    lastLayoutDirection = layoutDirection;
 }
 
 
@@ -709,8 +659,9 @@ function getOne(index) {
     return one
 }
 
-// 移除後面所有 let oldNum, let layoutDirection, let changeDirection, let lastImgList, let lastImgCount, let lastColumnNum, let lastLayoutDirection 的重複宣告（整個檔案只保留一份）
-
+let oldNum = 2
+let layoutDirection = 'horizontal'; // 預設橫式
+let changeDirection = false;
 document.addEventListener('DOMContentLoaded', function() {
     let infoIcon = document.querySelector('.gg-info');
     let tooltip = document.getElementById('customTooltip');
@@ -829,7 +780,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function resetColumn() {
     if (oldColumn != 'none') {
         if(changeDirection){
-            changeDirection = false
+            changeDirection = false;
         }else{
             oldColumn.style.backgroundColor = ''
         }
