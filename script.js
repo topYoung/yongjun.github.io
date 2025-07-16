@@ -967,6 +967,7 @@ function setItem(n) {
 
 function generatePDF() {
     console.log('allImg=', allImg)  
+    console.log('imgData=', imgData)
     const data = {
         allImg, // 直接傳陣列
         titleText: title_text.innerHTML,
