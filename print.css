@@ -6,4 +6,34 @@
     padding: 0 10mm; /* 邊距 */
 }
 
+@page2 {
+    position: absolute;
+    width: 210mm; /* A4 紙張的寬度 */
+    height: 297mm; /* A4 紙張的高度 */
+    margin: 0 auto; /* 居中對齊 */
+    padding: 0 10mm; /* 邊距 */
+}   
 /* 其他 CSS 規則 */
+
+/* 直式列印模式：旋轉 -90 度，對齊 A4 portrait 紙張 */
+.vertical-mode .print-content2 {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 297mm;
+    height: 210mm;
+    /* 可根據需求微調 margin/padding 讓內容置中 */
+}
+
+/* portrait 紙張設定 */
+.vertical-mode .print-content2, .vertical-mode .page {
+    page-break-after: always;
+}
+
+@media print {
+    .vertical-mode .print-content2 {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 297mm;
+        height: 210mm;
+    }
+}

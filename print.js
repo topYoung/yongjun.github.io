@@ -94,3 +94,7 @@ function updateVerticalModeClass() {
 // 請在 setImage 或切換排列方向的地方呼叫 updateVerticalModeClass()
 // 例如 setImage() 結尾加：
 // updateVerticalModeClass();
+
+// 載入時讀取 localStorage 的排列模式
+let layoutDirection = localStorage.getItem('layoutDirection') || 'horizontal';
+updateVerticalModeClass();

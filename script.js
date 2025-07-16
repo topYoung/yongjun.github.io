@@ -589,6 +589,10 @@ function setImage() {
     }
     // setImage 結尾加上這行，確保每次切換排列方向時自動加上/移除 .vertical-mode class
     // updateVerticalModeClass();
+    // 在 setImage 或切換排列方向的地方，儲存排列模式到 localStorage
+    if (typeof layoutDirection !== 'undefined') {
+        localStorage.setItem('layoutDirection', layoutDirection);
+    }
 }
 
 
@@ -969,6 +973,7 @@ function generatePDF() {
     newWin.document.open();
     newWin.document.write('<html><head><title>Print</title>')
     newWin.document.write('<link rel="stylesheet" type="text/css" href="style.css">');
+    newWin.document.write('<link rel="stylesheet" type="text/css" href="print.css">');
     // newWin.document.write('</head><body onload="window.print()">');
     newWin.document.write('</head><body>');
     // newWin.document.write('<html><head><title>Print</title></head><body>');
