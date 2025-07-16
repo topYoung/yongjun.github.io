@@ -661,6 +661,7 @@ function getOne(index) {
 
 let oldNum = 2
 let layoutDirection = 'horizontal'; // 預設橫式
+let changeDirection = false;
 document.addEventListener('DOMContentLoaded', function() {
     let infoIcon = document.querySelector('.gg-info');
     let tooltip = document.getElementById('customTooltip');
@@ -751,12 +752,14 @@ document.addEventListener('DOMContentLoaded', function() {
     radioHorizontal.addEventListener('change', function() {
         if (this.checked) {
             layoutDirection = 'horizontal';
+            changeDirection = true;
             resetColumn();
         }
     });
     radioVertical.addEventListener('change', function() {
         if (this.checked) {
             layoutDirection = 'vertical';
+            changeDirection = true;
             resetColumn();
         }
     });
@@ -776,7 +779,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function resetColumn() {
     if (oldColumn != 'none') {
-        oldColumn.style.backgroundColor = ''
+        if(changeDirection){
+            changeDirection = false
+        }else{
+            oldColumn.style.backgroundColor = ''
+        }
 
         content.innerHTML = ''
         setImage()
