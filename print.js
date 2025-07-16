@@ -6,16 +6,29 @@ checkLoad()
 
 //     }
 // }
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 window.onload = function() {
     document.body.style.overflowY = "scroll";
-    let allImg = JSON.parse(localStorage.getItem('print_allImg') || '[]');
-    let titleText = localStorage.getItem('print_title') || '';
-    let subTitle = localStorage.getItem('print_subTitle') || '';
-    let columnNum = parseInt(localStorage.getItem('print_columnNum') || '2');
-    let layoutDirection = localStorage.getItem('print_layoutDirection') || 'horizontal';
-    setPrintPageOrientation(layoutDirection);
+    document.getElementById('content_all').innerHTML = '<div style="text-align:center;color:#888;margin-top:80px;">等待資料傳入...</div>';
+};
+
+window.addEventListener('message', function(event) {
+    // 可加 event.origin 檢查
+    const data = event.data;
+    if (!data || !data.allImg) return;
+    let { allImg, titleText, subTitle, columnNum, layoutDirection } = data;
     let contentAll = document.getElementById('content_all');
     contentAll.innerHTML = '';
+    setPrintPageOrientation(layoutDirection);
     let pageMaxHeight = (layoutDirection === 'vertical') ? 297 : 210; // mm
     let pageMaxWidth = (layoutDirection === 'vertical') ? 210 : 297; // mm
     let mm2px = mm => mm * 96 / 25.4;
@@ -71,7 +84,7 @@ window.onload = function() {
         window.print();
         window.close();
     };
-};
+});
 
 function checkLoad() {
 

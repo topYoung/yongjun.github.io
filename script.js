@@ -966,12 +966,13 @@ function setItem(n) {
 //a4 : 72解析度 595/842
 
 function generatePDF() {
-    localStorage.setItem('print_allImg', JSON.stringify(allImg));
-    localStorage.setItem('print_title', title_text.innerHTML);
-    localStorage.setItem('print_subTitle', subTitle.innerHTML);
-    localStorage.setItem('print_columnNum', columnNum);
-    localStorage.setItem('print_layoutDirection', layoutDirection);
-
+    const data = {
+        allImg,
+        titleText: title_text.innerHTML,
+        subTitle: subTitle.innerHTML,
+        columnNum,
+        layoutDirection
+    };
     var html = '';
     html += '<html><head><title>Print</title>';
     html += '<link rel="stylesheet" type="text/css" href="style.css">';
@@ -988,6 +989,15 @@ function generatePDF() {
     newWin.document.open();
     newWin.document.write(html);
     newWin.document.close();
+    // 傳遞資料給新視窗
+    const sendData = () => { newWin.postMessage(data, '*'); };
+    // 有些瀏覽器需等新視窗 ready
+    if (newWin.document.readyState === 'complete') {
+        sendData();
+    } else {
+        newWin.onload = sendData;
+        setTimeout(sendData, 500); // 雙保險
+    }
 }
 
 // 修正切換排列方向時，欄位色塊不會消失
