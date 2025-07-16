@@ -80,3 +80,17 @@ function goPrint() {
     }
 
 }
+
+// 新增：根據 layoutDirection 切換 .vertical-mode class
+function updateVerticalModeClass() {
+    const content = document.getElementById('content');
+    if (!content) return;
+    if (typeof layoutDirection !== 'undefined' && layoutDirection === 'vertical') {
+        content.classList.add('vertical-mode');
+    } else {
+        content.classList.remove('vertical-mode');
+    }
+}
+// 請在 setImage 或切換排列方向的地方呼叫 updateVerticalModeClass()
+// 例如 setImage() 結尾加：
+// updateVerticalModeClass();
