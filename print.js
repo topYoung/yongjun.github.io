@@ -54,30 +54,35 @@ window.addEventListener('message', function(event) {
         titleDiv.appendChild(h3);
         pageDiv.appendChild(titleDiv);
         let group = allImg.slice(i, i + itemsPerPage);
-        let rowDiv = null;
-        group.forEach((imgUrl, idx) => {
-            if (idx % itemsPerRow === 0) {
-                rowDiv = document.createElement('div');
-                rowDiv.style.display = 'flex';
-                rowDiv.style.justifyContent = 'center';
-                rowDiv.style.marginBottom = '8px';
-                pageDiv.appendChild(rowDiv);
+        for (let row = 0; row < rowsPerPage; row++) {
+            let rowDiv = document.createElement('div');
+            rowDiv.style.display = 'flex';
+            rowDiv.style.justifyContent = 'center';
+            rowDiv.style.marginBottom = '8px';
+            for (let col = 0; col < itemsPerRow; col++) {
+                let idx = row * itemsPerRow + col;
+                let imgIdx = i + idx;
+                if (imgIdx >= allImg.length) break;
+                let imgBox = document.createElement('div');
+                imgBox.className = 'image_box';
+                imgBox.style.width = itemWidthPx + 'px';
+                imgBox.style.height = itemHeightPx + 'px';
+                imgBox.style.overflow = 'hidden';
+                let img = document.createElement('img');
+                img.className = 'image';
+                img.src = allImg[imgIdx];
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+                imgBox.appendChild(img);
+                rowDiv.appendChild(imgBox);
             }
-            let imgBox = document.createElement('div');
-            imgBox.className = 'image_box';
-            imgBox.style.width = itemWidthPx + 'px';
-            imgBox.style.height = itemHeightPx + 'px';
-            imgBox.style.overflow = 'hidden';
-            let img = document.createElement('img');
-            img.className = 'image';
-            img.src = imgUrl;
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '100%';
-            imgBox.appendChild(img);
-            rowDiv.appendChild(imgBox);
-        });
+            pageDiv.appendChild(rowDiv);
+        }
         contentAll.appendChild(pageDiv);
     }
+    // 隱藏 loader
+    var loader = document.getElementById('loader');
+    if (loader) loader.style.display = 'none';
     window.goPrint = function() {
         document.getElementById('pdf_btn').style.display = 'none';
         document.getElementById('print_tip').style.display = 'none';
