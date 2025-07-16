@@ -8,29 +8,50 @@ checkLoad()
 // }
 window.onload = function() {
     document.body.style.overflowY = "scroll";
-    // 判斷是否為直式列印，若是則每頁都插入標題副標
-    const isVertical = document.querySelector('.print-content2') !== null;
-    if (isVertical) {
-        // 取得所有分頁
-        const pages = document.querySelectorAll('.print-content2');
-        pages.forEach(page => {
-            // 檢查是否已經有標題，避免重複
-            if (!page.querySelector('.title')) {
-                const titleDiv = document.createElement('div');
-                titleDiv.className = 'title';
-                let h2 = document.createElement('h2');
-                let h3 = document.createElement('h3');
-                h2.className = 'title_text';
-                h3.className = 'subTitle';
-                // 從第一頁抓標題內容
-                const firstTitle = document.querySelector('.title_text');
-                const firstSub = document.querySelector('.subTitle');
-                h2.innerHTML = firstTitle ? firstTitle.innerHTML : '';
-                h3.innerHTML = firstSub ? firstSub.innerHTML : '';
-                titleDiv.appendChild(h2);
-                titleDiv.appendChild(h3);
-                page.insertBefore(titleDiv, page.firstChild);
+    // 只針對直式（寬度600px）進行A4分頁
+    const content = document.getElementById('content');
+    if (content && content.offsetWidth <= 620) { // 600px + padding
+        const items = Array.from(content.children);
+        const pageHeightPx = 1122; // 297mm @ 96dpi
+        let pages = [];
+        let currentPage = [];
+        let currentHeight = 0;
+        items.forEach((item, idx) => {
+            // 強制渲染，取得高度
+            item.style.display = '';
+            const itemHeight = item.offsetHeight + 24; // margin/padding buffer
+            if (currentHeight + itemHeight > pageHeightPx && currentPage.length > 0) {
+                pages.push(currentPage);
+                currentPage = [];
+                currentHeight = 0;
             }
+            currentPage.push(item);
+            currentHeight += itemHeight;
+        });
+        if (currentPage.length > 0) pages.push(currentPage);
+        // 清空原內容
+        content.innerHTML = '';
+        // 產生分頁
+        pages.forEach(pageItems => {
+            const pageDiv = document.createElement('div');
+            pageDiv.className = 'print-content-vertical';
+            // 標題副標
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'title';
+            let h2 = document.createElement('h2');
+            let h3 = document.createElement('h3');
+            h2.className = 'title_text';
+            h3.className = 'subTitle';
+            const firstTitle = document.querySelector('.title_text');
+            const firstSub = document.querySelector('.subTitle');
+            h2.innerHTML = firstTitle ? firstTitle.innerHTML : '';
+            h3.innerHTML = firstSub ? firstSub.innerHTML : '';
+            titleDiv.appendChild(h2);
+            titleDiv.appendChild(h3);
+            pageDiv.appendChild(titleDiv);
+            // 加入本頁內容
+            pageItems.forEach(it => pageDiv.appendChild(it));
+            content.appendChild(pageDiv);
         });
     }
 }
