@@ -676,6 +676,7 @@ function getOne(index) {
 }
 
 let oldNum = 2
+let layoutDirection = 'horizontal'; // 預設橫式
 document.addEventListener('DOMContentLoaded', function() {
     let infoIcon = document.querySelector('.gg-info');
     let tooltip = document.getElementById('customTooltip');
@@ -759,6 +760,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     }
+    // 監聽排列方向 radio 切換
+    const radioHorizontal = document.getElementById('direction_horizontal');
+    const radioVertical = document.getElementById('direction_vertical');
+    radioHorizontal.checked = true;
+    radioHorizontal.addEventListener('change', function() {
+        if (this.checked) {
+            layoutDirection = 'horizontal';
+            resetColumn();
+        }
+    });
+    radioVertical.addEventListener('change', function() {
+        if (this.checked) {
+            layoutDirection = 'vertical';
+            resetColumn();
+        }
+    });
     // var checkbox = document.getElementById('all_item_input');
 
     // checkbox.addEventListener('change', function() {
