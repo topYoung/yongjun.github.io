@@ -447,14 +447,36 @@ function createImage() {
 
     for (let i = 0; i < len; i++) {
         const one = getOne(filterID[i])
-        // console.log("one==", one)
+        // one: 純圖片網址陣列，imgData: 對應 item 物件
         if (one.length > 0) {
             for (let j = 0; j < one.length; j++) {
-                allImg.push(one[j])
+                // 組合 {url, text}，text 由右側勾選欄位組合
+                let url = one[j]
+                let item = imgData[imgData.length] // 取對應 item
+                let desc = ''
+                if (item) {
+                    // 取所有勾選欄位內容
+                    for (let c = 0; c < allCheckbox.length; c++) {
+                        let checkbox = allCheckbox[c]
+                        if (checkbox.checked) {
+                            let title = checkbox.title
+                            let value = ''
+                            if (checkbox.id == 'name') {
+                                value = item.name
+                            } else {
+                                value = getValue(checkbox.id, item.column_values)
+                            }
+                            if (value && value.trim() !== '') {
+                                desc += (title == 'Name' || title == 'name' ? '項目' : title) + '\n' + value + '\n'
+                            }
+                        }
+                    }
+                    desc = desc.trim()
+                }
+                allImg.push({ url: url, text: desc })
             }
         }
     }
-    console.log('data=', imgData)
     setImage()
 }
 
@@ -486,7 +508,7 @@ function setImage() {
             if (columnNum == 4) div.className = 'item_img4'
             div2.className = 'image_box'
             div3.className = 'image_box_right'
-            img.src = allImg[k]
+            img.src = allImg[k].url
             img.className = "image"
             div.appendChild(div2)
             div.appendChild(div3)
@@ -543,7 +565,7 @@ function setImage() {
             }
             div2.className = 'image_box'
             div3.className = 'image_box_right'
-            img.src = allImg[k]
+            img.src = allImg[k].url
             img.className = "image"
             if (k >= columnNum * 2) {
                 if (k % (columnNum * 2) == 0) {
@@ -966,10 +988,34 @@ function setItem(n) {
 //a4 : 72解析度 595/842
 
 function generatePDF() {
-    console.log('allImg=', allImg)  
-    console.log('imgData=', imgData)
+    // 依照 allImg 與 imgData 組合 {url, text} 陣列
+    let allImgWithText = [];
+    for (let i = 0; i < allImg.length; i++) {
+        let url = allImg[i];
+        let item = imgData[i];
+        let desc = '';
+        if (item) {
+            for (let c = 0; c < allCheckbox.length; c++) {
+                let checkbox = allCheckbox[c];
+                if (checkbox.checked) {
+                    let title = checkbox.title;
+                    let value = '';
+                    if (checkbox.id == 'name') {
+                        value = item.name;
+                    } else {
+                        value = getValue(checkbox.id, item.column_values);
+                    }
+                    if (value && value.trim() !== '') {
+                        desc += (title == 'Name' || title == 'name' ? '項目' : title) + '\n' + value + '\n';
+                    }
+                }
+            }
+            desc = desc.trim();
+        }
+        allImgWithText.push({ url, text: desc });
+    }
     const data = {
-        allImg, // 直接傳陣列
+        allImg: allImgWithText, // 傳遞組合後的陣列
         titleText: title_text.innerHTML,
         subTitle: subTitle.innerHTML,
         columnNum,
