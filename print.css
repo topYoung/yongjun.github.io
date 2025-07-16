@@ -1,9 +1,6 @@
 @page {
-    position: absolute;
-    width: 297mm; /* A4 紙張的寬度 */
-    height: 210mm; /* A4 紙張的高度 */
-    margin: 0 auto; /* 居中對齊 */
-    padding: 0 10mm; /* 邊距 */
+    size: A4 landscape;
+    margin: 0;
 }
 
 @page2 {
@@ -35,5 +32,11 @@
         transform-origin: left top;
         width: 297mm;
         height: 210mm;
+    }
+    body.vertical-mode .print-content2 {
+        /* 這裡只是樣式，@page 不能被 class 控制 */
+    }
+    body.vertical-mode {
+        /* 這裡也無法直接改 @page，但可用 JS 動態切換 <style> */
     }
 }

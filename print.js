@@ -72,13 +72,25 @@ function checkLoad() {
     })
 }
 
-function goPrint() {
-    if (canPrint == true) {
-        pdf_btn.style.display = 'none'
-        window.print()
-        window.close();
+function setPrintPageOrientation() {
+    // 移除舊的 style
+    const oldStyle = document.getElementById('dynamic-print-orientation');
+    if (oldStyle) oldStyle.remove();
+    // 新增 style
+    const style = document.createElement('style');
+    style.id = 'dynamic-print-orientation';
+    if (layoutDirection === 'vertical') {
+        style.innerHTML = '@page { size: A4 portrait; margin: 0; }';
+    } else {
+        style.innerHTML = '@page { size: A4 landscape; margin: 0; }';
     }
-
+    document.head.appendChild(style);
+}
+// 在 goPrint() 執行 window.print() 前呼叫 setPrintPageOrientation()
+const oldGoPrint = goPrint;
+goPrint = function() {
+    setPrintPageOrientation();
+    oldGoPrint();
 }
 
 // 新增：根據 layoutDirection 切換 .vertical-mode class
