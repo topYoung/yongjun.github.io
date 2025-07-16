@@ -458,10 +458,14 @@ function createImage() {
     setImage()
 }
 
+// 保留最上方這一份
+let oldNum = 2;
+let layoutDirection = 'horizontal'; // 預設橫式
+let changeDirection = false;
 let lastImgList = [];
 let lastImgCount = 0;
-let lastColumnNum = columnNum;
-let lastLayoutDirection = layoutDirection;
+let lastColumnNum = 2;
+let lastLayoutDirection = 'horizontal';
 
 function arraysEqual(a1, a2) {
     if (a1.length !== a2.length) return false;
@@ -705,9 +709,8 @@ function getOne(index) {
     return one
 }
 
-let oldNum = 2
-let layoutDirection = 'horizontal'; // 預設橫式
-let changeDirection = false;
+// 移除後面所有 let oldNum, let layoutDirection, let changeDirection, let lastImgList, let lastImgCount, let lastColumnNum, let lastLayoutDirection 的重複宣告（整個檔案只保留一份）
+
 document.addEventListener('DOMContentLoaded', function() {
     let infoIcon = document.querySelector('.gg-info');
     let tooltip = document.getElementById('customTooltip');
