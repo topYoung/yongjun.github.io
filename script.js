@@ -966,8 +966,9 @@ function setItem(n) {
 //a4 : 72解析度 595/842
 
 function generatePDF() {
+    console.log('allImg=', allImg)  
     const data = {
-        allImg,
+        allImg, // 直接傳陣列
         titleText: title_text.innerHTML,
         subTitle: subTitle.innerHTML,
         columnNum,
@@ -991,12 +992,11 @@ function generatePDF() {
     newWin.document.close();
     // 傳遞資料給新視窗
     const sendData = () => { newWin.postMessage(data, '*'); };
-    // 有些瀏覽器需等新視窗 ready
     if (newWin.document.readyState === 'complete') {
         sendData();
     } else {
         newWin.onload = sendData;
-        setTimeout(sendData, 500); // 雙保險
+        setTimeout(sendData, 500);
     }
 }
 
