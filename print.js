@@ -8,7 +8,70 @@ checkLoad()
 // }
 window.onload = function() {
     document.body.style.overflowY = "scroll";
-}
+    let allImg = JSON.parse(localStorage.getItem('print_allImg') || '[]');
+    let titleText = localStorage.getItem('print_title') || '';
+    let subTitle = localStorage.getItem('print_subTitle') || '';
+    let columnNum = parseInt(localStorage.getItem('print_columnNum') || '2');
+    let layoutDirection = localStorage.getItem('print_layoutDirection') || 'horizontal';
+    setPrintPageOrientation(layoutDirection);
+    let contentAll = document.getElementById('content_all');
+    contentAll.innerHTML = '';
+    let pageMaxHeight = (layoutDirection === 'vertical') ? 297 : 210; // mm
+    let pageMaxWidth = (layoutDirection === 'vertical') ? 210 : 297; // mm
+    let mm2px = mm => mm * 96 / 25.4;
+    let maxPageHeightPx = mm2px(pageMaxHeight) - 40;
+    let maxPageWidthPx = mm2px(pageMaxWidth);
+    let itemsPerRow = columnNum;
+    let rowsPerPage = (layoutDirection === 'vertical' ? 4 : 2);
+    let itemHeightPx = (maxPageHeightPx - 60) / rowsPerPage;
+    let itemWidthPx = (maxPageWidthPx - 20) / columnNum;
+    let itemsPerPage = rowsPerPage * columnNum;
+    for (let i = 0; i < allImg.length; i += itemsPerPage) {
+        let pageDiv = document.createElement('div');
+        pageDiv.className = 'page ' + (layoutDirection === 'vertical' ? 'print-content2' : 'print-content');
+        let titleDiv = document.createElement('div');
+        titleDiv.className = 'title';
+        let h2 = document.createElement('h2');
+        let h3 = document.createElement('h3');
+        h2.className = 'title_text';
+        h3.className = 'subTitle';
+        h2.innerHTML = titleText;
+        h3.innerHTML = subTitle;
+        titleDiv.appendChild(h2);
+        titleDiv.appendChild(h3);
+        pageDiv.appendChild(titleDiv);
+        let group = allImg.slice(i, i + itemsPerPage);
+        let rowDiv = null;
+        group.forEach((imgUrl, idx) => {
+            if (idx % itemsPerRow === 0) {
+                rowDiv = document.createElement('div');
+                rowDiv.style.display = 'flex';
+                rowDiv.style.justifyContent = 'center';
+                rowDiv.style.marginBottom = '8px';
+                pageDiv.appendChild(rowDiv);
+            }
+            let imgBox = document.createElement('div');
+            imgBox.className = 'image_box';
+            imgBox.style.width = itemWidthPx + 'px';
+            imgBox.style.height = itemHeightPx + 'px';
+            imgBox.style.overflow = 'hidden';
+            let img = document.createElement('img');
+            img.className = 'image';
+            img.src = imgUrl;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
+            imgBox.appendChild(img);
+            rowDiv.appendChild(imgBox);
+        });
+        contentAll.appendChild(pageDiv);
+    }
+    window.goPrint = function() {
+        document.getElementById('pdf_btn').style.display = 'none';
+        document.getElementById('print_tip').style.display = 'none';
+        window.print();
+        window.close();
+    };
+};
 
 function checkLoad() {
 
@@ -72,11 +135,9 @@ function checkLoad() {
     })
 }
 
-function setPrintPageOrientation() {
-    // 移除舊的 style
+function setPrintPageOrientation(layoutDirection) {
     const oldStyle = document.getElementById('dynamic-print-orientation');
     if (oldStyle) oldStyle.remove();
-    // 新增 style
     const style = document.createElement('style');
     style.id = 'dynamic-print-orientation';
     if (layoutDirection === 'vertical') {

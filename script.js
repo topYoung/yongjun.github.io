@@ -966,44 +966,24 @@ function setItem(n) {
 //a4 : 72解析度 595/842
 
 function generatePDF() {
-    // 取得標題與副標題內容
-    var titleText = document.getElementById('title_text') ? document.getElementById('title_text').innerHTML : '';
-    var subTitle = document.getElementById('subTitle') ? document.getElementById('subTitle').innerHTML : '';
-    // 取得所有分頁內容
-    var contentAll = document.getElementById('content_all');
-    // 產生每頁都帶標題/副標題的內容
-    var pages = contentAll.querySelectorAll('.page');
-    let pagesHtml = '';
-    for (let i = 0; i < pages.length; i++) {
-        let page = pages[i].cloneNode(true);
-        // 插入標題區塊
-        let titleDiv = document.createElement('div');
-        titleDiv.className = 'title';
-        let h2 = document.createElement('h2');
-        let h3 = document.createElement('h3');
-        h2.className = 'title_text';
-        h3.className = 'subTitle';
-        h2.innerHTML = titleText;
-        h3.innerHTML = subTitle;
-        titleDiv.appendChild(h2);
-        titleDiv.appendChild(h3);
-        page.insertBefore(titleDiv, page.firstChild);
-        pagesHtml += page.outerHTML;
-    }
-    // 組合完整 HTML
+    localStorage.setItem('print_allImg', JSON.stringify(allImg));
+    localStorage.setItem('print_title', title_text.innerHTML);
+    localStorage.setItem('print_subTitle', subTitle.innerHTML);
+    localStorage.setItem('print_columnNum', columnNum);
+    localStorage.setItem('print_layoutDirection', layoutDirection);
+
     var html = '';
     html += '<html><head><title>Print</title>';
     html += '<link rel="stylesheet" type="text/css" href="style.css">';
     html += '<link rel="stylesheet" type="text/css" href="print.css">';
     html += '<meta charset="utf-8">';
     html += '</head><body>';
-    html += '<div style="color: #c00; font-size: 15px; margin: 10px 0 20px 10px;">※ 若預覽未自動切換為直式，請在列印對話框手動選擇直式紙張。</div>';
-    html += '<div class="print-content">' + pagesHtml + '</div>';
-    html += '<button id="pdf_btn" onclick="goPrint()">列 印</button>';
+    html += '<button id="pdf_btn" onclick="goPrint()" style="margin-left:10px;">列 印</button>';
+    html += '<div id="print_tip" style="color: #c00; font-size: 15px; margin: 10px 0 20px 120px;">※ 若預覽未自動切換為直式，請在列印對話框手動選擇直式紙張。</div>';
+    html += '<div id="content_all"></div>';
     html += '<div id="loader" style="z-index: 900"><img src="loading.svg"></div>';
     html += '<script src="print.js"></script>';
     html += '</body></html>';
-    // 開新視窗並寫入
     var newWin = window.open('', '_blank');
     newWin.document.open();
     newWin.document.write(html);
