@@ -407,7 +407,9 @@ input[type=text] {
     transform: translateX(-50%);
 
 }
-
+#layout_direction{
+    margin-left: 15px;
+}
 #loader_cont {
     position: absolute;
     border: 8px solid #f3f3f3;
