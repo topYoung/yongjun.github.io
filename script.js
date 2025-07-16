@@ -966,27 +966,48 @@ function setItem(n) {
 //a4 : 72解析度 595/842
 
 function generatePDF() {
-    
-
-    var divToPrint = document.getElementById('content_all');
+    // 取得標題與副標題內容
+    var titleText = document.getElementById('title_text') ? document.getElementById('title_text').innerHTML : '';
+    var subTitle = document.getElementById('subTitle') ? document.getElementById('subTitle').innerHTML : '';
+    // 取得所有分頁內容
+    var contentAll = document.getElementById('content_all');
+    // 產生每頁都帶標題/副標題的內容
+    var pages = contentAll.querySelectorAll('.page');
+    let pagesHtml = '';
+    for (let i = 0; i < pages.length; i++) {
+        let page = pages[i].cloneNode(true);
+        // 插入標題區塊
+        let titleDiv = document.createElement('div');
+        titleDiv.className = 'title';
+        let h2 = document.createElement('h2');
+        let h3 = document.createElement('h3');
+        h2.className = 'title_text';
+        h3.className = 'subTitle';
+        h2.innerHTML = titleText;
+        h3.innerHTML = subTitle;
+        titleDiv.appendChild(h2);
+        titleDiv.appendChild(h3);
+        page.insertBefore(titleDiv, page.firstChild);
+        pagesHtml += page.outerHTML;
+    }
+    // 組合完整 HTML
+    var html = '';
+    html += '<html><head><title>Print</title>';
+    html += '<link rel="stylesheet" type="text/css" href="style.css">';
+    html += '<link rel="stylesheet" type="text/css" href="print.css">';
+    html += '<meta charset="utf-8">';
+    html += '</head><body>';
+    html += '<div style="color: #c00; font-size: 15px; margin: 10px 0 20px 10px;">※ 若預覽未自動切換為直式，請在列印對話框手動選擇直式紙張。</div>';
+    html += '<div class="print-content">' + pagesHtml + '</div>';
+    html += '<button id="pdf_btn" onclick="goPrint()">列 印</button>';
+    html += '<div id="loader" style="z-index: 900"><img src="loading.svg"></div>';
+    html += '<script src="print.js"></script>';
+    html += '</body></html>';
+    // 開新視窗並寫入
     var newWin = window.open('', '_blank');
     newWin.document.open();
-    newWin.document.write('<html><head><title>Print</title>')
-    newWin.document.write('<link rel="stylesheet" type="text/css" href="style.css">');
-    newWin.document.write('<link rel="stylesheet" type="text/css" href="print.css">');
-    // newWin.document.write('</head><body onload="window.print()">');
-    newWin.document.write('</head><body>');
-    // newWin.document.write('<html><head><title>Print</title></head><body>');
-    newWin.document.write('<div class="print-content">' + divToPrint.innerHTML + '</div>');
-    newWin.document.write('<button id="pdf_btn" onclick="goPrint()">列  印</button>')
-    newWin.document.write('<div id="loader" style="z-index: 900"><img src="loading.svg"></div>')
-    newWin.document.write('<script src="print.js"></script>');
-    newWin.document.write('</body></html>');
+    newWin.document.write(html);
     newWin.document.close();
-    
-
-   
-
 }
 
 // 修正切換排列方向時，欄位色塊不會消失
