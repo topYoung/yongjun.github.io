@@ -988,63 +988,20 @@ function setItem(n) {
 //a4 : 72解析度 595/842
 
 function generatePDF() {
-    // 依照 allImg 與 imgData 組合 {url, text} 陣列
-    let allImgWithText = [];
-    for (let i = 0; i < allImg.length; i++) {
-        let url = allImg[i];
-        let item = imgData[i];
-        let desc = '';
-        if (item) {
-            for (let c = 0; c < allCheckbox.length; c++) {
-                let checkbox = allCheckbox[c];
-                if (checkbox.checked) {
-                    let title = checkbox.title;
-                    let value = '';
-                    if (checkbox.id == 'name') {
-                        value = item.name;
-                    } else {
-                        value = getValue(checkbox.id, item.column_values);
-                    }
-                    if (value && value.trim() !== '') {
-                        desc += (title == 'Name' || title == 'name' ? '項目' : title) + '\n' + value + '\n';
-                    }
-                }
-            }
-            desc = desc.trim();
-        }
-        allImgWithText.push({ url, text: desc });
-    }
-    const data = {
-        allImg: allImgWithText, // 傳遞組合後的陣列
-        titleText: title_text.innerHTML,
-        subTitle: subTitle.innerHTML,
-        columnNum,
-        layoutDirection
-    };
-    var html = '';
-    html += '<html><head><title>Print</title>';
-    html += '<link rel="stylesheet" type="text/css" href="style.css">';
-    html += '<link rel="stylesheet" type="text/css" href="print.css">';
-    html += '<meta charset="utf-8">';
-    html += '</head><body>';
-    html += '<button id="pdf_btn" onclick="goPrint()" style="margin-left:10px;">列 印</button>';
-    html += '<div id="print_tip" style="color: #c00; font-size: 15px; margin: 10px 0 20px 120px;">※ 若預覽未自動切換為直式，請在列印對話框手動選擇直式紙張。</div>';
-    html += '<div id="content_all"></div>';
-    html += '<div id="loader" style="z-index: 900"><img src="loading.svg"></div>';
-    html += '<script src="print.js"></script>';
-    html += '</body></html>';
+    var divToPrint = document.getElementById('content_all');
     var newWin = window.open('', '_blank');
     newWin.document.open();
-    newWin.document.write(html);
+    newWin.document.write('<html><head><title>Print</title>')
+    newWin.document.write('<link rel="stylesheet" type="text/css" href="style.css">');
+    // newWin.document.write('</head><body onload="window.print()">');
+    newWin.document.write('</head><body>');
+    // newWin.document.write('<html><head><title>Print</title></head><body>');
+    newWin.document.write('<div class="print-content">' + divToPrint.innerHTML + '</div>');
+    newWin.document.write('<button id="pdf_btn" onclick="goPrint()">列  印</button>')
+    newWin.document.write('<div id="loader" style="z-index: 900"><img src="loading.svg"></div>')
+    newWin.document.write('<script src="print.js"></script>');
+    newWin.document.write('</body></html>');
     newWin.document.close();
-    // 傳遞資料給新視窗
-    const sendData = () => { newWin.postMessage(data, '*'); };
-    if (newWin.document.readyState === 'complete') {
-        sendData();
-    } else {
-        newWin.onload = sendData;
-        setTimeout(sendData, 500);
-    }
 }
 
 // 修正切換排列方向時，欄位色塊不會消失
