@@ -588,7 +588,7 @@ function setImage() {
         }
     }
     // setImage 結尾加上這行，確保每次切換排列方向時自動加上/移除 .vertical-mode class
-    updateVerticalModeClass();
+    // updateVerticalModeClass();
 }
 
 
