@@ -111,6 +111,8 @@ function updateVerticalModeClass() {
     } else {
         content.classList.remove('vertical-mode');
     }
+    // 切換排列方向時即時插入對應 @page，提升預覽正確率
+    setPrintPageOrientation();
 }
 // 請在 setImage 或切換排列方向的地方呼叫 updateVerticalModeClass()
 // 例如 setImage() 結尾加：

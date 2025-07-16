@@ -12,12 +12,12 @@
 }   
 /* 其他 CSS 規則 */
 
-/* 直式列印模式：旋轉 -90 度，對齊 A4 portrait 紙張 */
+/* 直式列印模式：不再旋轉，僅設定寬高對齊 A4 portrait 紙張 */
 .vertical-mode .print-content2 {
-    transform: rotate(-90deg);
-    transform-origin: left top;
-    width: 297mm;
-    height: 210mm;
+    /* transform: rotate(-90deg); */
+    /* transform-origin: left top; */
+    width: 210mm;
+    height: 297mm;
     /* 可根據需求微調 margin/padding 讓內容置中 */
 }
 
@@ -28,10 +28,10 @@
 
 @media print {
     .vertical-mode .print-content2 {
-        transform: rotate(-90deg);
-        transform-origin: left top;
-        width: 297mm;
-        height: 210mm;
+        /* transform: rotate(-90deg); */
+        /* transform-origin: left top; */
+        width: 210mm;
+        height: 297mm;
     }
     body.vertical-mode .print-content2 {
         /* 這裡只是樣式，@page 不能被 class 控制 */
