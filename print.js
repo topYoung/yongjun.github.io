@@ -8,31 +8,50 @@ checkLoad()
 // }
 window.onload = function() {
     document.body.style.overflowY = "scroll";
-    // 只針對直式（寬度600px）進行A4分頁
+    // 只針對直式（寬度600px）進行A4分頁，並依欄數分組
     const content = document.getElementById('content');
     if (content && content.offsetWidth <= 620) { // 600px + padding
         const items = Array.from(content.children);
+        // 依照 columnNum 分組每行
+        let columnNum = 2;
+        try {
+            columnNum = window.opener ? window.opener.columnNum : columnNum;
+        } catch(e) {}
+        if (!columnNum || columnNum < 1) columnNum = 2;
+        let rows = [];
+        for (let i = 0; i < items.length; i += columnNum) {
+            let rowDiv = document.createElement('div');
+            rowDiv.style.display = 'flex';
+            rowDiv.style.justifyContent = 'center';
+            rowDiv.style.marginBottom = '8px';
+            for (let j = 0; j < columnNum; j++) {
+                if (i + j >= items.length) break;
+                rowDiv.appendChild(items[i + j]);
+            }
+            rows.push(rowDiv);
+        }
+        // 分頁：每頁最多可容納的行數
         const pageHeightPx = 1122; // 297mm @ 96dpi
         let pages = [];
         let currentPage = [];
         let currentHeight = 0;
-        items.forEach((item, idx) => {
+        rows.forEach((row, idx) => {
             // 強制渲染，取得高度
-            item.style.display = '';
-            const itemHeight = item.offsetHeight + 24; // margin/padding buffer
-            if (currentHeight + itemHeight > pageHeightPx && currentPage.length > 0) {
+            row.style.display = 'flex';
+            const rowHeight = row.offsetHeight + 24;
+            if (currentHeight + rowHeight > pageHeightPx && currentPage.length > 0) {
                 pages.push(currentPage);
                 currentPage = [];
                 currentHeight = 0;
             }
-            currentPage.push(item);
-            currentHeight += itemHeight;
+            currentPage.push(row);
+            currentHeight += rowHeight;
         });
         if (currentPage.length > 0) pages.push(currentPage);
         // 清空原內容
         content.innerHTML = '';
         // 產生分頁
-        pages.forEach(pageItems => {
+        pages.forEach(pageRows => {
             const pageDiv = document.createElement('div');
             pageDiv.className = 'print-content-vertical';
             // 標題副標
@@ -50,7 +69,7 @@ window.onload = function() {
             titleDiv.appendChild(h3);
             pageDiv.appendChild(titleDiv);
             // 加入本頁內容
-            pageItems.forEach(it => pageDiv.appendChild(it));
+            pageRows.forEach(row => pageDiv.appendChild(row));
             content.appendChild(pageDiv);
         });
     }
