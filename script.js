@@ -502,16 +502,16 @@ function setImage() {
             img.id = "img_" + k
             div2.id = "img_div2_" + k
             if (columnNum == 1) {
-                div.className = 'item_img1'
+                div.className = 'item_img1_v'
             }
             if (columnNum == 2) {
-                div.className = 'item_img2'
+                div.className = 'item_img2_v'
             }
             if (columnNum == 3) {
-                div.className = 'item_img3'
+                div.className = 'item_img3_v'
             }
             if (columnNum == 4) {
-                div.className = 'item_img4'
+                div.className = 'item_img4_v'
             }
             div2.className = 'image_box'
             div3.className = 'image_box_right'
