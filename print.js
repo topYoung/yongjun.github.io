@@ -7,7 +7,7 @@ checkLoad()
 function checkLoad() {
 
     const content = document.getElementById('content');
-    if (content && content.offsetWidth <= 820) {
+    if (content && content.offsetWidth <= 920) {
         // 直式模式：動態插入 @page portrait
         if (!document.getElementById('vertical-print-style')) {
             const style = document.createElement('style');
