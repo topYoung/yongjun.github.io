@@ -488,53 +488,83 @@ function setImage() {
     }
     let n = 0
     if (layoutDirection === 'vertical') {
-        // 直式：用和橫式一樣的方式秀圖，但 content 寬度較小且置中
         content.style.width = '600px';
         content.style.margin = '0 auto';
-        for (let k = 0; k < allImg.length; k++) {
-            let div = document.createElement('div')
-            let div2 = document.createElement('div')
-            let div3 = document.createElement('div')
-            let img = document.createElement('img')
-            div.id = "img_div_" + k
-            div3.id = "img_div3_" + k
-            div3.name = imgData[k].name
-            div3.column_values = imgData[k].column_values
-            img.id = "img_" + k
-            div2.id = "img_div2_" + k
-            if (columnNum == 1) div.className = 'item_img1'
-            if (columnNum == 2) div.className = 'item_img2'
-            if (columnNum == 3) div.className = 'item_img3'
-            if (columnNum == 4) div.className = 'item_img4'
-            div2.className = 'image_box'
-            div3.className = 'image_box_right'
-            img.src = allImg[k].url
-            img.className = "image"
-            div.appendChild(div2)
-            div.appendChild(div3)
-            div2.appendChild(img)
-            content.appendChild(div)
-            img.onload = function() {
-                const w = img.offsetWidth
-                const h = img.offsetHeight
-                const w1 = div2.offsetWidth
-                const h1 = div2.offsetHeight
-                const rate = h / w
-                const rate1 = h1 / w1
-                if (rate > rate1) {
-                    img.style.height = "96%"
-                    img.style.width = h1 * 0.96 / rate + "px"
-                } else {
-                    img.style.width = "96%"
-                    img.style.height = w1 * 0.96 * rate + "px"
+        let rowsPerPage = 3;
+        let itemsPerRow = columnNum;
+        let itemsPerPage = rowsPerPage * itemsPerRow;
+        for (let i = 0; i < allImg.length; i += itemsPerPage) {
+            // 建立一個頁面容器
+            let pageDiv = document.createElement('div');
+            pageDiv.className = 'page-vertical';
+            // 主標副標
+            let titleDiv = document.createElement('div');
+            titleDiv.className = 'title';
+            let h2 = document.createElement('h2');
+            let h3 = document.createElement('h3');
+            h2.className = 'title_text';
+            h3.className = 'subTitle';
+            h2.innerHTML = title_text.innerHTML;
+            h3.innerHTML = subTitle.innerHTML;
+            titleDiv.appendChild(h2);
+            titleDiv.appendChild(h3);
+            pageDiv.appendChild(titleDiv);
+            // 三列
+            for (let row = 0; row < rowsPerPage; row++) {
+                let rowDiv = document.createElement('div');
+                rowDiv.className = 'vertical-row';
+                rowDiv.style.display = 'flex';
+                rowDiv.style.justifyContent = 'center';
+                for (let col = 0; col < itemsPerRow; col++) {
+                    let idx = i + row * itemsPerRow + col;
+                    if (idx >= allImg.length) break;
+                    let div = document.createElement('div')
+                    let div2 = document.createElement('div')
+                    let div3 = document.createElement('div')
+                    let img = document.createElement('img')
+                    div.id = "img_div_" + idx
+                    div3.id = "img_div3_" + idx
+                    div3.name = imgData[idx].name
+                    div3.column_values = imgData[idx].column_values
+                    img.id = "img_" + idx
+                    div2.id = "img_div2_" + idx
+                    if (columnNum == 1) div.className = 'item_img1'
+                    if (columnNum == 2) div.className = 'item_img2'
+                    if (columnNum == 3) div.className = 'item_img3'
+                    if (columnNum == 4) div.className = 'item_img4'
+                    div2.className = 'image_box'
+                    div3.className = 'image_box_right'
+                    img.src = allImg[idx].url
+                    img.className = "image"
+                    div.appendChild(div2)
+                    div.appendChild(div3)
+                    div2.appendChild(img)
+                    rowDiv.appendChild(div);
+                    img.onload = function() {
+                        const w = img.offsetWidth
+                        const h = img.offsetHeight
+                        const w1 = div2.offsetWidth
+                        const h1 = div2.offsetHeight
+                        const rate = h / w
+                        const rate1 = h1 / w1
+                        if (rate > rate1) {
+                            img.style.height = "96%"
+                            img.style.width = h1 * 0.96 / rate + "px"
+                        } else {
+                            img.style.width = "96%"
+                            img.style.height = w1 * 0.96 * rate + "px"
+                        }
+                        n++
+                        if (n == allImg.length) {
+                            clearData()
+                            setData()
+                            loader.style.visibility = 'hidden'
+                        }
+                    }
                 }
-                n++
-                if (n == allImg.length) {
-                    clearData()
-                    setData()
-                    loader.style.visibility = 'hidden'
-                }
+                pageDiv.appendChild(rowDiv);
             }
+            content.appendChild(pageDiv);
         }
     } else {
         // 橫式：維持原本寬度
