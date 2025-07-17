@@ -539,6 +539,8 @@ function setImage() {
                     div.appendChild(div2)
                     div.appendChild(div3)
                     div2.appendChild(img)
+                    // 圖片右側顯示描述
+                    div3.innerText = imgData[idx].name || '';
                     rowDiv.appendChild(div);
                     img.onload = function() {
                         const w = img.offsetWidth
@@ -562,7 +564,7 @@ function setImage() {
                         }
                     }
                 }
-                pageDiv.appendChild(rowDiv);
+                if (rowDiv.children.length > 0) pageDiv.appendChild(rowDiv);
             }
             content.appendChild(pageDiv);
         }
