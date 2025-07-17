@@ -517,8 +517,8 @@ function setImage() {
             div3.className = 'image_box_right'
             img.src = allImg[k].url
             img.className = "image"
-            if (k >= columnNum * 3) {
-                if (k % (columnNum * 3) == 0) {
+            if (k >= columnNum * 4) {
+                if (k % (columnNum * 4) == 0) {
                     let div4 = document.createElement('div')
                     div4.className = 'title'
                     let h2 = document.createElement('h2')
