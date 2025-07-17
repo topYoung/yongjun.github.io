@@ -2,85 +2,12 @@ let canPrint = false
 loader.style.visibility = 'visible'
 // print_btn.onclick = function() {
 checkLoad()
-//     if(canPrint == true){
 
-//     }
-// }
-// window.onload = function() {
-//     document.body.style.overflowY = "scroll";
-//     // 只針對直式（寬度600px）進行A4分頁，並依欄數分組
-//     const content = document.getElementById('content');
-//     if (content && content.offsetWidth <= 620) { // 600px + padding
-//         const items = Array.from(content.children);
-//         // 依照 columnNum 分組每行
-//         let columnNum = 2;
-//         try {
-//             columnNum = window.opener ? window.opener.columnNum : columnNum;
-//         } catch(e) {}
-//         if (!columnNum || columnNum < 1) columnNum = 2;
-//         let rows = [];
-//         for (let i = 0; i < items.length; i += columnNum) {
-//             let rowDiv = document.createElement('div');
-//             rowDiv.style.display = 'flex';
-//             rowDiv.style.justifyContent = 'center';
-//             rowDiv.style.marginBottom = '8px';
-//             for (let j = 0; j < columnNum; j++) {
-//                 if (i + j >= items.length) break;
-//                 rowDiv.appendChild(items[i + j]);
-//             }
-//             rows.push(rowDiv);
-//         }
-//         // 分頁：每頁最多可容納的行數
-//         const pageHeightPx = 1122; // 297mm @ 96dpi
-//         let pages = [];
-//         let currentPage = [];
-//         let currentHeight = 0;
-//         rows.forEach((row, idx) => {
-//             // 強制渲染，取得高度
-//             row.style.display = 'flex';
-//             const rowHeight = row.offsetHeight + 24;
-//             if (currentHeight + rowHeight > pageHeightPx && currentPage.length > 0) {
-//                 pages.push(currentPage);
-//                 currentPage = [];
-//                 currentHeight = 0;
-//             }
-//             currentPage.push(row);
-//             currentHeight += rowHeight;
-//         });
-//         if (currentPage.length > 0) pages.push(currentPage);
-//         // 清空原內容
-//         content.innerHTML = '';
-//         // 產生分頁
-//         pages.forEach(pageRows => {
-//             const pageDiv = document.createElement('div');
-//             pageDiv.className = 'print-content-vertical';
-//             // 標題副標
-//             const titleDiv = document.createElement('div');
-//             titleDiv.className = 'title';
-//             let h2 = document.createElement('h2');
-//             let h3 = document.createElement('h3');
-//             h2.className = 'title_text';
-//             h3.className = 'subTitle';
-//             const firstTitle = document.querySelector('.title_text');
-//             const firstSub = document.querySelector('.subTitle');
-//             h2.innerHTML = firstTitle ? firstTitle.innerHTML : '';
-//             h3.innerHTML = firstSub ? firstSub.innerHTML : '';
-//             titleDiv.appendChild(h2);
-//             titleDiv.appendChild(h3);
-//             pageDiv.appendChild(titleDiv);
-//             // 加入本頁內容
-//             pageRows.forEach(row => pageDiv.appendChild(row));
-//             content.appendChild(pageDiv);
-//         });
-//     }
-// }
 
 function checkLoad() {
 
-
-
     const content = document.getElementById('content');
-    if (content && content.offsetWidth <= 620) {
+    if (content && content.offsetWidth <= 820) {
         // 直式模式：動態插入 @page portrait
         if (!document.getElementById('vertical-print-style')) {
             const style = document.createElement('style');
