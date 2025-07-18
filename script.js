@@ -488,7 +488,7 @@ function setImage() {
     }
     let n = 0
     if (layoutDirection === 'vertical') {
-        content.style.width = '900px';
+        content.style.width = '960px';
         content.style.margin = '0 auto';
         for (let k = 0; k < allImg.length; k++) {
             let div = document.createElement('div')
