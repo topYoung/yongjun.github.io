@@ -501,7 +501,7 @@ function setImage() {
             div3.column_values = imgData[k].column_values
             img.id = "img_" + k
             div2.id = "img_div2_" + k
-            if (columnNum == 1) {
+            if (columnNum*2 == 1) {
                 div.className = 'item_img1_v'
             }
             if (columnNum == 2) {
@@ -517,8 +517,8 @@ function setImage() {
             div3.className = 'image_box_right'
             img.src = allImg[k].url
             img.className = "image"
-            if (k >= columnNum * 4) {
-                if (k % (columnNum * 4) == 0) {
+            if (k >= columnNum ) {
+                if (k % (columnNum * 2) == 0) {
                     let div4 = document.createElement('div')
                     div4.className = 'title'
                     let h2 = document.createElement('h2')
