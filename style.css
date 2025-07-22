@@ -262,7 +262,7 @@ input[type=text] {
 .item_img1_v {
     position: relative;
     width: 96%;
-    height: 160mm;   
+    height: 185mm;   
     margin-left: 2%;
     margin-bottom: 0.7vw;
     border: 1px solid black;
@@ -286,7 +286,7 @@ input[type=text] {
     position: relative;
     width: 48%;
 /*    height: 35vh;*/
-    height: 160mm;
+    height: 185mm;
     margin-left: 1%;
     left: 1.5%;
     margin-bottom: 0.7vw;
@@ -331,7 +331,7 @@ input[type=text] {
 .item_img3 {
     position: relative;
     width: 31%;
-    height: 82mm;
+    height: 185mm;
 
     margin-left: 1.3%;
     margin-bottom: 0.7vw;
@@ -342,8 +342,8 @@ input[type=text] {
 
 .item_img3_v {
     position: relative;
-    width: 31%;
-    height: 120mm;
+    width: 48%;
+    height: 124mm;
     margin-left: 1.3%;
     margin-bottom: 0.7vw;
     border: 1px solid black;
