@@ -262,7 +262,7 @@ input[type=text] {
 .item_img1_v {
     position: relative;
     width: 96%;
-    height: 46%;   
+    height: 160mm;   
     margin-left: 2%;
     margin-bottom: 0.7vw;
     border: 1px solid black;
@@ -286,7 +286,7 @@ input[type=text] {
     position: relative;
     width: 48%;
 /*    height: 35vh;*/
-    height: 48%;
+    height: 160mm;
     margin-left: 1%;
     left: 1.5%;
     margin-bottom: 0.7vw;
@@ -343,8 +343,7 @@ input[type=text] {
 .item_img3_v {
     position: relative;
     width: 31%;
-    height: 92mm;
-
+    height: 120mm;
     margin-left: 1.3%;
     margin-bottom: 0.7vw;
     border: 1px solid black;
@@ -356,7 +355,7 @@ input[type=text] {
 .item_img4 {
     position: relative;
     width: 48%;
-    height: 31%;
+    height: 82mm;
     margin-left: 1%;
     margin-bottom: 0.7vw;
     border: 1px solid black;
@@ -367,7 +366,7 @@ input[type=text] {
 .item_img4_v {
     position: relative;
     width: 48%;
-    height: 24%;
+    height: 92mm;
     margin-left: 1%;
     margin-bottom: 0.7vw;
     border: 1px solid black;
